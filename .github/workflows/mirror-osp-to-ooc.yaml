@@ -1,0 +1,42 @@
+name: Mirror to OpenOS-Project-Ecosystem-OOC
+
+# Sync chain:
+#   Interested-Deving-1896/penguins-eggs-audit  ->  OpenOS-Project-OSP/penguins-eggs-audit
+#   OpenOS-Project-OSP/penguins-eggs-audit  ->(this file)->  OpenOS-Project-Ecosystem-OOC/penguins-eggs-audit
+
+on:
+  push:
+    branches: ["**"]
+    tags: ["**"]
+  schedule:
+    - cron: "15 * * * *"
+  workflow_dispatch:
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout full history (detached HEAD)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+          # Detached HEAD avoids "refusing to fetch into checked-out branch"
+          # when git fetch --all tries to update the currently checked-out ref.
+          ref: ${{ github.sha }}
+
+      - name: Fetch all branches and tags
+        run: git fetch --all --tags --prune
+
+      - name: Push mirror to OpenOS-Project-Ecosystem-OOC
+        env:
+          MIRROR_TOKEN: ${{ secrets.MIRROR_TOKEN }}
+        run: |
+          git config --global credential.helper store
+          printf 'https://x-access-token:%s@github.com\n' "$MIRROR_TOKEN" \
+            > ~/.git-credentials
+          git remote add mirror \
+            "https://github.com/OpenOS-Project-Ecosystem-OOC/penguins-eggs-audit.git"
+          git push mirror 'refs/remotes/origin/*:refs/heads/*' --force
+          git push mirror --tags --force
+          rm -f ~/.git-credentials
