@@ -4,13 +4,41 @@
 [![Built with Ona](https://ona.com/build-with-ona.svg)](https://app.ona.com/#https://github.com/Interested-Deving-1896/penguins-eggs-audit)
 
 <!-- AI:start:what-it-does -->
-_Description pending._
+This project extends the Penguins-Eggs framework with integration plugins for 39 git-based projects across eight domains, including security auditing, supply chain transparency, and configuration management. It provides tools and workflows for developers and infrastructure teams to automate tasks such as repository mirroring, dependency tracking, and security scanning, enhancing transparency and reliability in software development and distribution pipelines.
 <!-- AI:end:what-it-does -->
 
 ## Architecture
 
 <!-- AI:start:architecture -->
-_Architecture documentation pending._
+The project integrates 39 git-based tools across 8 domains to enhance security auditing and supply chain transparency for Penguins-Eggs. It is structured as a modular plugin system, with each domain represented by a dedicated directory under `src/` and `plugins/`. The core logic resides in `src/`, while `plugins/` contains domain-specific extensions. The CLI entry point is defined in `bin/cli.js`. Workflows for automation and CI/CD are located in `.github/workflows/`. Configuration files for TypeScript, npm, and other tools are in the repository root.
+
+Directory structure:
+```plaintext
+penguins-eggs-audit/
+├── bin/                     # CLI entry point
+├── config/                  # Configuration files
+├── plugins/                 # Domain-specific plugins
+│   ├── dev-workflow/
+│   ├── distribution/
+│   ├── packaging/
+│   ├── decentralized/
+│   ├── security-audit/
+│   └── sbom/
+├── src/                     # Core logic and modules
+│   ├── build-infra/
+│   ├── config-management/
+│   ├── decentralized/
+│   ├── dev-workflow/
+│   ├── distribution/
+│   ├── packaging/
+│   ├── sbom/
+│   └── security-audit/
+├── test/                    # Test cases
+├── .github/workflows/       # CI/CD workflows
+├── tsconfig.json            # TypeScript configuration
+├── package.json             # Project metadata and dependencies
+└── README.md                # Project documentation
+```
 <!-- AI:end:architecture -->
 
 ## Install
